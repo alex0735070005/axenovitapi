@@ -5,14 +5,14 @@
 # mod_rewrite). Additionally, this reduces the matching process for the
 # startpage (path "/") because otherwise Apache will apply the rewritting rules
 # to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
-DirectoryIndex app.php
-#DirectoryIndex app_dev.php
+DirectoryIndex index.php
+#DirectoryIndex index_dev.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
     # Redirect to URI without front controller to prevent duplicate content
-    # (with and without `/app.php`). Only do this redirect on the initial
+    # (with and without `/index.php`). Only do this redirect on the initial
     # rewrite by Apache and not on subsequent cycles. Otherwise we would get an
     # endless redirect loop (request -> rewrite to front controller ->
     # redirect -> request -> ...).
@@ -23,8 +23,8 @@ DirectoryIndex app.php
     # - use Apache >= 2.3.9 and replace all L flags by END flags and remove the
     #   following RewriteCond (best solution)
     RewriteCond %{ENV:REDIRECT_STATUS} ^$
-    #RewriteRule ^app_dev\.php(/(.*)|$) %{CONTEXT_PREFIX}/$2 [R=301,L]
-    RewriteRule ^app\.php(/(.*)|$) %{CONTEXT_PREFIX}/$2 [R=301,L]
+    #RewriteRule ^index_dev\.php(/(.*)|$) %{CONTEXT_PREFIX}/$2 [R=301,L]
+    RewriteRule ^index\.php(/(.*)|$) %{CONTEXT_PREFIX}/$2 [R=301,L]
 
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
@@ -41,18 +41,18 @@ DirectoryIndex app.php
     RewriteRule ^cpv-\d+\/(.+)$ $1 [L]
 
     RewriteCond %{REQUEST_FILENAME} -f
-    #RewriteRule ^(.*)$ app_dev.php [QSA,L]
-    RewriteRule ^(.*)$ app.php [QSA,L]
+    #RewriteRule ^(.*)$ index_dev.php [QSA,L]
+    RewriteRule ^(.*)$ index.php [QSA,L]
 
     # The following rewrites all other queries to the front controller. The
     # condition ensures that if you are using Apache aliases to do mass virtual
     # hosting, the base path will be prepended to allow proper resolution of the
-    # app.php file; it will work in non-aliased environments as well, providing
+    # index.php file; it will work in non-aliased environments as well, providing
     # a safe, one-size fits all solution.
     RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
     RewriteRule ^(.*) - [E=BASE:%1]
-    #RewriteRule .? %{ENV:BASE}app_dev.php [L]
-    RewriteRule .? %{ENV:BASE}app.php [L]
+    #RewriteRule .? %{ENV:BASE}index_dev.php [L]
+    RewriteRule .? %{ENV:BASE}index.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
@@ -60,8 +60,8 @@ DirectoryIndex app.php
         # When mod_rewrite is not available, we instruct a temporary redirect of
         # the startpage to the front controller explicitly so that the website
         # and the generated links can still be used.
-        #RedirectMatch 302 ^/$ /app_dev.php/
-        RedirectMatch 302 ^/$ /app.php/
+        #RedirectMatch 302 ^/$ /index_dev.php/
+        RedirectMatch 302 ^/$ /index.php/
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
