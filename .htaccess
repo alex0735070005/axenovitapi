@@ -15,13 +15,15 @@ DirectoryIndex index.php
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^(.*)$ index.php [QSA,L]
    
-    RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
-    RewriteRule ^(.*) - [E=BASE:%1]
-    RewriteRule .? %{ENV:BASE}index.php [L]
+    RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+    RewriteRule ^ %1 [L,NE,R=302]
+
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+
 </IfModule>
 
 <IfModule !mod_rewrite.c>
     <IfModule mod_alias.c>       
-        RedirectMatch 302 ^/$ /public/index.php/
+        RedirectMatch 302 ^/$ /index.php/
     </IfModule>
 </IfModule>
