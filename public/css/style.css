@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 30px auto;
+  box-shadow: 0 0 3px 2px #000000a6;
+  padding: 15px;
+  background: #fff;
+  min-height: 600px;
+}
+
+body {
+  background: radial-gradient(black, transparent);
+}
+
+.input-block {
+  padding: 5px;
+  font-size: 22px;
+  max-width: 480px;
+  width: 100%;
+}
+
+.row-block {
+    display: flex;
+    justify-content: space-between;
+    max-width: 700px;
+    align-items: center;
+}

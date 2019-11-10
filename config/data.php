@@ -7,6 +7,7 @@ $posts = [
         "description" => "Description post-1",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "25"
     ],
     [
@@ -16,6 +17,7 @@ $posts = [
         "description" => "Description post-2",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "25"
     ],
     [
@@ -25,6 +27,7 @@ $posts = [
         "description" => "Description post-3",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "10"
     ],
     [
@@ -34,6 +37,7 @@ $posts = [
         "description" => "Description post-4",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "10"
     ],
     [
@@ -43,6 +47,7 @@ $posts = [
         "description" => "Description post-5",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "10"
     ],
 
@@ -53,6 +58,7 @@ $posts = [
         "description" => "Description post-6",
         "data_create" => "2017-08-25 00:00:00",
         "data_update" => "2017-08-25 00:00:00",
+        "favorite" => false,
         "likes" => "18"
     ],
 
@@ -63,6 +69,7 @@ $posts = [
         "description" => "Description post-7",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "2"
     ],
 
@@ -73,6 +80,7 @@ $posts = [
         "description" => "Description post-8",
         "data_create" => "2017-08-31 00:00:00",
         "data_update" => "2017-08-31 00:00:00",
+        "favorite" => false,
         "likes" => "22"
     ],
 
@@ -83,6 +91,7 @@ $posts = [
         "description" => "Description post-9",
         "data_create" => "2017-08-29 00:00:00",
         "data_update" => "2017-08-29 00:00:00",
+        "favorite" => false,
         "likes" => "5"
     ]
 ];
