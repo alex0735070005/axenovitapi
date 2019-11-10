@@ -26,19 +26,21 @@ class BlogController extends AbstractController
         }
     }
 
-    // /**
-    //  * @Route("/posts/{id}", name="posts_options", methods={"OPTIONS"})
-    //  */
-    // public function postsOption()
-    // {
-    //     header('Access-Control-Allow-Origin: *');
-    //     $response = new Response(
-    //         'Content',
-    //         Response::HTTP_OK,
-    //         ['content-type' => 'text/html']
-    //     );
-    //     return $response;
-    // }
+    /**
+     * @Route("/posts/{id}", name="posts_options", methods={"OPTIONS"})
+     */
+    public function postsOption()
+    {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: *');
+        
+        $response = new Response(
+            'Content',
+            Response::HTTP_OK,
+            ['content-type' => 'text/html']
+        );
+        return $response;
+    }
 
     /**
      * @Route("/posts", name="posts", methods={"GET"})
