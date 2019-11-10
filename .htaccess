@@ -42,7 +42,7 @@ DirectoryIndex public/index.php
 
     RewriteCond %{REQUEST_FILENAME} -f
     #RewriteRule ^(.*)$ index_dev.php [QSA,L]
-    RewriteRule ^(.*)$ index.php [QSA,L]
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
 
     # The following rewrites all other queries to the front controller. The
     # condition ensures that if you are using Apache aliases to do mass virtual
@@ -52,7 +52,7 @@ DirectoryIndex public/index.php
     RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
     RewriteRule ^(.*) - [E=BASE:%1]
     #RewriteRule .? %{ENV:BASE}index_dev.php [L]
-    RewriteRule .? %{ENV:BASE}index.php [L]
+    RewriteRule .? %{ENV:BASE}public/index.php [L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
@@ -61,7 +61,7 @@ DirectoryIndex public/index.php
         # the startpage to the front controller explicitly so that the website
         # and the generated links can still be used.
         #RedirectMatch 302 ^/$ /index_dev.php/
-        RedirectMatch 302 ^/$ /index.php/
+        RedirectMatch 302 ^/$ /public/index.php/
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
