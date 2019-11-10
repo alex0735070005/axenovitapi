@@ -1,5 +1,5 @@
 <?php
-$users = [
+$posts = [
     [
         "id" => "1",
         "title" => "Post-1",

@@ -10,15 +10,17 @@ class BlogController extends AbstractController
 {
     public function __construct(SessionInterface $session)
     {
+        
         header('Access-Control-Allow-Origin: *');
         $this->session = $session;
                 
-        include_once __DIR__ . '/../../config/data.php';
+        include_once __DIR__ . './../../config/data.php';
         
         $this->posts = $this->session->get('posts');
         
         if(!isset($this->posts) || empty($this->posts)) {
             $this->session->set('posts', $posts);
+            
             $this->posts = $posts;
         }
          
