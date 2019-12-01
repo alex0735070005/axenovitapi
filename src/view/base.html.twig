@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>{% block title %}Axenov it school API{% endblock %}</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Axenov it school API{% endblock %}</title>
 
-		<link rel="stylesheet" href="css/style.css"> 
+        <link rel="stylesheet" href="/css/style.css"> 
+        <script defer src="js/main.js"></script>
 
-        {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}{% endblock %}
 
-    </head>
-    <body>
+</head>
+<body>
+    <div class="header__bg">
+        <header class="header">
+            <div class="logo">
+                <img class="logo__img" src="/img/logo.png"/>
+            </div>
+            <nav>
+                <ul class="header__menu">
+                        <li><a class="header__link" href="/">Home</a></li>
+                        {% if app.user == null %} 
+                        <li><a class="header__link" href="/registration">Registration</a></li>
+                        <li><a class="header__link" href="/login">Login</a></li>
+                        {% endif %} 
+                        {% if app.user %}                     
+                        <li><a class="header__link" href="/personal">Personal</a></li>
+                        <li><a class="header__link" href="/logout">Logout</a></li>
+                        {% endif %} 
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <main>
         <div class="page">
-            {% block body %}{% endblock %}
-        </div>
-        {% block javascripts %}{% endblock %}
-    </body>
+        {% block body %}{% endblock %}
+    </div>
+</main>
+{% block javascripts %}{% endblock %}
+</body>
 </html>

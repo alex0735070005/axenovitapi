@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <h1 class="page__main">Registration</h1>
+    <form action="/registration" method="POST">
+        <fieldset class="registration">
+            <legend>Registration</legend>
+            <input class="registration__text" name="username" plaseholder="enter login" value="alex"/>
+            <input class="registration__text" name="email" plaseholder="enter email" value="alex0735070005@gmail.com"/>
+            <input class="registration__text" name="password" type="password" plaseholder="enter password" value="1111"/>
+            <button class="registration__btn">
+                registration
+            </button>
+        </fieldset>
+    </form>
+
+{% endblock %}

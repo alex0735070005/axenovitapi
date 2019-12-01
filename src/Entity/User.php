@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
-{
+class User implements UserInterface {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -17,160 +18,113 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
-    private $name;
+    private $username;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
-    private $description;
+    private $email;
+
+    /**
+     * @ORM\Column(type="boolean",)
+     */
+    private $verify;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status;
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $api_key;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateCreate;
+    private $date_update;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="array")
      */
-    private $dateUpdate;
+    private $roles;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $rate;
+    public function __construct() {
+        $this->roles = array('ROLE_USER');
+        $this->date_update = new \DateTime();
+    }
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $percent;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $minutes;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $hours;
-
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getName()
-    {
-        return $this->name;
+    public function getUserName() {
+        return $this->username;
     }
 
-    public function setName(string $name)
-    {
-        $this->name = $name;
+    public function setUserName(string $username) {
+        $this->username = $username;
 
         return $this;
     }
 
-    public function getDescription()
-    {
-        return $this->description;
+    public function getEmail() {
+        return $this->email;
     }
 
-    public function setDescription(?string $description)
-    {
-        $this->description = $description;
+    public function setEmail(string $email) {
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getStatus()
-    {
-        return $this->status;
+    public function getPassword() {
+        return $this->password;
     }
 
-    public function setStatus(string $status)
-    {
-        $this->status = $status;
+    public function setPassword(string $password) {
+        $this->password = $password;
 
         return $this;
     }
 
-    public function getDateCreate()
-    {
-        return $this->dateCreate;
+    public function getApiKey() {
+        return $this->api_key;
     }
 
-    public function setDateCreate(\DateTimeInterface $dateCreate)
-    {
-        $this->dateCreate = $dateCreate;
+    public function setApiKey(string $api_key) {
+        $this->api_key = $api_key;
 
         return $this;
     }
 
-    public function getDateUpdate()
-    {
-        return $this->dateUpdate;
+    public function getVerify() {
+        return $this->verify;
     }
 
-    public function setDateUpdate(\DateTimeInterface $dateUpdate)
-    {
-        $this->dateUpdate = $dateUpdate;
-
-        return $this;
+    public function setVerify(string $verfy) {
+        return $this->verify = $verfy;
     }
 
-    public function getRate()
-    {
-        return $this->rate;
+    public function getDateUpdate() {
+        return $this->date_update;
     }
 
-    public function setRate(string $rate)
-    {
-        $this->rate = $rate;
-
-        return $this;
+    public function getRoles() {
+        return $this->roles;
     }
 
-    public function getPercent()
-    {
-        return $this->percent;
+    public function getSalt() {
+        // The bcrypt and argon2i algorithms don't require a separate salt.
+        // You *may* need a real salt if you choose a different encoder.
+        return null;
     }
 
-    public function setPercent(string $percent)
-    {
-        $this->percent = $percent;
-
-        return $this;
+    public function eraseCredentials() {
+        
     }
 
-    public function getMinutes()
-    {
-        return $this->minutes;
-    }
-
-    public function setMinutes(int $minutes)
-    {
-        $this->minutes = $minutes;
-
-        return $this;
-    }
-
-    public function getHours()
-    {
-        return $this->hours;
-    }
-
-    public function setHours(int $hours)
-    {
-        $this->hours = $hours;
-
-        return $this;
-    }
 }

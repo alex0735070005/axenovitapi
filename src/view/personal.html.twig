@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+{% block body %}
+        <h1 class="page__main">Personal</h1>
+        <section>  
+                <h2>Hello {{username}}</h2>
+                <p><b>Your API key:</b> <input class="personal__apikey" value="{{apiKey}}"/></p>
+                <p><b>Email:</b> {{email}} {% if verify %} is confirmed {% endif %}</p>
+        </section>
+{% endblock %}

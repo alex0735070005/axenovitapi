@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <h1 class="page__main">Login</h1>
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <form action="/login" method="POST">
+        <fieldset class="registration">
+            <legend>Login</legend>
+            <input class="registration__text" name="email" value="{{ last_username }}" plaseholder="enter email" value="alex0735070005@gmail.com"/>
+            <input class="registration__text" name="password" type="password" plaseholder="enter password" value="1111"/>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+                   >
+            <button class="registration__btn">
+                login
+            </button>
+        </fieldset>
+    </form>
+
+{% endblock %}
