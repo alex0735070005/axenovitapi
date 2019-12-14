@@ -5,28 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Post;
 
 class BlogController extends AbstractController
 {
-    public function __construct(SessionInterface $session)
-    {
-
-        header('Access-Control-Allow-Origin: *');
-        $this->session = $session;
-
-        include __DIR__ . './../../config/data.php';
-
-        $this->posts = $this->session->get('posts');
-
-        if (!isset($this->posts) || empty($this->posts)) {
-            $this->session->set('posts', $posts);
-
-            $this->posts = $posts;
-        }
-    }
-
-    /**
+     /**
      * @Route("/posts/{id}", name="posts_options", methods={"OPTIONS"})
      */
     public function postsOption()
@@ -43,125 +28,117 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/posts", name="posts", methods={"GET"})
+     * @Route("/posts", name="getPosts", methods={"GET"})
      */
-    public function list()
+  public function getPosts(Request $request)
     {
         header('Access-Control-Allow-Origin: *');
-        return $this->json($this->posts);
-    }
+        $api_key = $request->query->get('api_key');      
+        $page = $request->query->get('page') ? $request->query->get('page') : 0;
+        $limit = $request->query->get('limit') ? $request->query->get('limit') : 10;        
+        
+        if(!$api_key) return $this->json(['result'=> false, 'message' => 'Api key is not exists']);
 
-    /**
-     * @Route("/posts/{id}", name="get_post", methods={"GET"})
-     */
-    public function getPost($id)
-    {
-        header('Access-Control-Allow-Origin: *');
-        $result = [];
-
-        foreach ($this->posts as $post) {
-            if ($post['id'] === $id) {
-                $result = $post;
-            }
-        }
-
-        if (!$result) {
-            return $this->json(["result" => false, "status" => 404, "message" => "not found"]);
-        }
-
-        return $this->json($result);
-    }
-
-    /**
-     * @Route("/posts/last/{limit}", name="posts_last", methods={"GET"})
-     */
-    public function lastPosts($limit)
-    {
-        header('Access-Control-Allow-Origin: *');
-        return $this->json(array_slice($this->posts, -($limit)));
-    }
-
-
-    /**
-     * @Route("/posts", name="create", methods={"POST"})
-     */
-    public function create()
-    {
-        header('Access-Control-Allow-Origin: *');
+        $PostRepo = $this->getDoctrine()->getManager()->getRepository(Post::class);
+        $posts = $PostRepo->getPosts($api_key, $page, $limit);
+        
+        if(!$posts) return $this->json(['result'=> false, 'message' => 'Post not found']);
+        
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/create',
+                'result' => true,
+                'posts' => $posts,
+                'message' => '',
         ]);
     }
 
     /**
-     * @Route("/posts/{id}", name="update", methods={"PUT"})
+     * @Route("/posts/{id}", name="getPost", methods={"GET"})
      */
-    public function update($id)
+    public function getPost(int $id, Request $request)
     {
         header('Access-Control-Allow-Origin: *');
+        $api_key = $request->query->get('api_key');
+        
+        $api_key = $request->query->get('api_key');        
+        if(!$api_key) return $this->json(['result'=> false, 'message' => 'Api key is not exists']);
 
+        $PostRepo = $this->getDoctrine()->getManager()->getRepository(Post::class);
+        $Post = $PostRepo->getPost($id, $api_key);
+        
+        if(!$Post) return $this->json(['result'=> false, 'message' => 'Post not found']);
+        
+        return $this->json([
+                'result' => true,
+                'post' => $Post->getFrontData(),
+                'message' => '',
+        ]);
+    }
+
+    /**
+     * @Route("/posts", name="addPost", methods={"POST"})
+     */
+    public function addPost(Request $request) {
+        header('Access-Control-Allow-Origin: *');
+        $data = json_decode(file_get_contents('php://input'));
+        // var_dump( $request->query->get('api_key')); die;
+        
+        $api_key = $request->query->get('api_key');
+        
+        if(!$api_key) return $this->json(['result'=> false, 'message' => 'Api key is not exists']);
+        
+        $PostRepo = $this->getDoctrine()->getManager()->getRepository(Post::class);
+        $Post = $PostRepo->addPost($data, $api_key);
+        
+        return $this->json([
+                'result' => true,
+                'post' =>$Post->getFrontData(),
+                'message' => 'Post created success',
+        ]);
+    }
+    
+    /**
+     * @Route("/posts/{id}", name="updatePost", methods={"PUT"})
+     */
+    public function updatePost(int $id, Request $request) {
+        header('Access-Control-Allow-Origin: *');
         $data = json_decode(file_get_contents('php://input'), true);
-
-        if (!isset($data) || empty($data)) {
-            return $this->json(["result" => false, "status" => 400, "message" => "400 not exists or is\'t json format data"]);
-        }
-
-        $result = [];
-
-        foreach ($this->posts as $key => $post) {
-            if ($post['id'] === $id) {
-                $this->posts[$key] = [
-                    "id" => $post['id'],
-                    "title" => isset($data['title']) ? $data['title'] : $post['title'],
-                    "user" => $post['user'],
-                    "description" => isset($data['description']) ? $data['description'] : $post['description'],
-                    "data_create" => $post['data_create'],
-                    "data_update" =>  date("Y-m-d H:i:s"),
-                    "likes" => isset($data['likes']) ? $data['likes'] : $post['likes'],
-                    "favorite" => isset($data['favorite']) ? $data['favorite'] : $post['favorite'],
-                ];
-                $result = $this->posts[$key];
-                $this->session->set('posts', $this->posts);
-            }
-        }
-        return $this->json($result);
+        // var_dump( $request->query->get('api_key')); die;
+       
+        $api_key = $request->query->get('api_key');
+        
+        if(!$api_key) return $this->json(['result'=> false, 'message' => 'Api key is not exists']);
+        
+        $PostRepo = $this->getDoctrine()->getManager()->getRepository(Post::class);
+        $Post = $PostRepo->updatePost($data, $api_key, $id);
+        
+        return $this->json([
+                'result' => true,
+                'post' =>$Post->getFrontData(),
+                'message' => 'Post updated success',
+        ]);
     }
-
+    
+    
     /**
-     * @Route("/posts/{id}", name="delete", methods={"DELETE"})
+     * @Route("/posts/{id}", name="deletePost", methods={"DELETE"})
      */
-    public function delete($id)
+    public function deletePost(int $id, Request $request)
     {
         header('Access-Control-Allow-Origin: *');
-        $posts = [];
-        $postId = null;
+        $api_key = $request->query->get('api_key');
+        
+        $api_key = $request->query->get('api_key');        
+        if(!$api_key) return $this->json(['result'=> false, 'message' => 'Api key is not exists']);
 
-        foreach ($this->posts as $post) {
-            if ($post['id'] === $id) {
-                $postId = $id;
-            } else {
-                $posts[] = $post;
-            }
-        }
-
-        if ($postId) {
-            $this->session->set('posts', $posts);
-            return $this->json(["result" => true, "status" => 200, "message" => "Ok", "postId" => $id]);
-        }
-
-        return $this->json(["result" => false, "status" => 404, "message" => "not found"]);
-    }
-
-    /**
-     * @Route("/reset/posts", name="reset-posts", methods={"GET"})
-     */
-    public function reset()
-    {
-        header('Access-Control-Allow-Origin: *');
-        include __DIR__ . './../../config/data.php';
-        $this->session->set('posts', $posts);
-
-        return $this->json(["reset" => true]);
+        $PostRepo = $this->getDoctrine()->getManager()->getRepository(Post::class);
+        $Post = $PostRepo->deletePost($id, $api_key);
+        
+        if(!$Post) return $this->json(['result'=> false, 'message' => 'Post not found']);
+        
+        return $this->json([
+                'result' => true,
+                'post' => $Post->getFrontData(),
+                'message' => 'post deleted success',
+        ]);
     }
 }

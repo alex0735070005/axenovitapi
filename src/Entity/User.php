@@ -1,7 +1,8 @@
 <?php
-
 namespace App\Entity;
 
+use App\Entity\Post;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -52,7 +53,14 @@ class User implements UserInterface {
      */
     private $roles;
 
+    /**
+     * One user has many posts. This is the inverse side.
+     * @ORM\OneToMany(targetEntity="Post", mappedBy="user")
+     */
+    private $posts;
+
     public function __construct() {
+        $this->posts = new ArrayCollection();
         $this->roles = array('ROLE_USER');
         $this->date_update = new \DateTime();
     }
@@ -121,6 +129,14 @@ class User implements UserInterface {
         // The bcrypt and argon2i algorithms don't require a separate salt.
         // You *may* need a real salt if you choose a different encoder.
         return null;
+    }
+
+    public function addPost(Post $Post) {
+      return $this->posts[] = $Post;
+    }
+
+    public function getPosts() {
+      return $this->posts;
     }
 
     public function eraseCredentials() {
