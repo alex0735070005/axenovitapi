@@ -60,7 +60,8 @@ class UserController extends AbstractController {
 
         $mailService->sendVerify($User->getEmail(), $User->getApiKey());
 
-        return $this->render('registrationSuccess.html.twig');
+        // return $this->render('registrationSuccess.html.twig');
+        return $this->redirectToRoute('/login');
     }
   
     
