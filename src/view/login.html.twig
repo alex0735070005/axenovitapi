@@ -7,8 +7,8 @@
     <form action="/login" method="POST">
         <fieldset class="registration">
             <legend>Login</legend>
-            <input class="registration__text" name="email" value="{{ last_username }}" plaseholder="enter email"/>
-            <input class="registration__text" name="password" type="password" plaseholder="enter password"/>
+            <input class="registration__text" name="email" value="{{ last_username }}" placeholder="enter email"/>
+            <input class="registration__text" name="password" type="password" placeholder="enter password"/>
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}"
                    >
