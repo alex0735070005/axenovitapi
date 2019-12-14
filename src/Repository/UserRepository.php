@@ -26,7 +26,7 @@ class UserRepository extends ServiceEntityRepository {
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setApiKey(EncoderService::encodeApiKey($data['email'], $data['username']));
-        $user->setVerify(false);
+        $user->setVerify(true);
         $user->setPassword($passwordEncoder->encodePassword($user, $data['password']));
         $em->persist($user);
         $em->flush();
