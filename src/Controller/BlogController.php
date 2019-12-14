@@ -28,7 +28,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/posts", name="getPosts", methods={"GET"})
+     * @Route("v1/posts", name="getPosts", methods={"GET"})
      */
   public function getPosts(Request $request)
     {
@@ -52,7 +52,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/posts/{id}", name="getPost", methods={"GET"})
+     * @Route("v1/posts/{id}", name="getPost", methods={"GET"})
      */
     public function getPost(int $id, Request $request)
     {
@@ -75,7 +75,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/posts", name="addPost", methods={"POST"})
+     * @Route("v1/posts", name="addPost", methods={"POST"})
      */
     public function addPost(Request $request) {
         header('Access-Control-Allow-Origin: *');
@@ -97,7 +97,7 @@ class BlogController extends AbstractController
     }
     
     /**
-     * @Route("/posts/{id}", name="updatePost", methods={"PUT"})
+     * @Route("v1/posts/{id}", name="updatePost", methods={"PUT"})
      */
     public function updatePost(int $id, Request $request) {
         header('Access-Control-Allow-Origin: *');
@@ -120,7 +120,7 @@ class BlogController extends AbstractController
     
     
     /**
-     * @Route("/posts/{id}", name="deletePost", methods={"DELETE"})
+     * @Route("v1/posts/{id}", name="deletePost", methods={"DELETE"})
      */
     public function deletePost(int $id, Request $request)
     {
