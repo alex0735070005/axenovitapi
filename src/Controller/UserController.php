@@ -19,8 +19,8 @@ class UserController extends AbstractController {
      */
     public function addUser(Request $request, MailService $mailService) {
         header('Access-Control-Allow-Origin: *');
-
-        $dataUser = json_decode($request->getContent());
+      var_dump('hi'); die;
+        $dataUser = json_decode($request->getContent(), true);
 
         $notValidResponse = ValidateService::validateRegistration($dataUser);
 
@@ -35,8 +35,8 @@ class UserController extends AbstractController {
         $mailService->sendVerify($User->getEmail(), $User->getApiKey());
 
         return $this->json([
-                    'result' => true,
-                    'message' => 'You are registration success, let`s go confirm your email address',
+            'result' => true,
+            'message' => 'You are registration success, let`s go confirm your email address',
         ]);
     }
 
@@ -44,13 +44,8 @@ class UserController extends AbstractController {
      * @Route("/registration", name="registration", methods={"GET", "POST"})
      */
     public function registration(Request $request, MailService $mailService, UserPasswordEncoderInterface $passwordEncoder) {
-        $dataUser = $request->getContent();
-
-        if($request->isMethod('GET')){
-            return $this->render('registration.html.twig');
-        }       
         
-        $dataUser = $request->request->all();
+        $dataUser = json_decode(file_get_contents('php://input'), true);
         
         $notValidResponse = ValidateService::validateRegistration($dataUser);
 
@@ -61,7 +56,10 @@ class UserController extends AbstractController {
         $mailService->sendVerify($User->getEmail(), $User->getApiKey());
 
         // return $this->render('registrationSuccess.html.twig');
-        return $this->redirectToRoute('app_login');
+        return $this->json([
+          'result' => true,
+          'message' => 'You are registration success',
+        ]);
     }
   
     
@@ -69,12 +67,19 @@ class UserController extends AbstractController {
      * @Route("/personal", name="personal", methods={"GET"})
      */
     public function personal() {
-        header('Access-Control-Allow-Origin: *');
 
         $user = $this->getUser();
         // dump($data);
         
-        return $this->render('personal.html.twig', [            
+        // return $this->render('personal.html.twig', [            
+        //     'username'=>$user->getUsername(),
+        //     'apiKey'=>$user->getApiKey(),
+        //     'email'=>$user->getEmail(),
+        //     'verify'=>$user->getVerify(),
+        //     'dataUpdate'=>$user->getDateUpdate(),
+        // ]); 
+        
+        return $this->json([        
             'username'=>$user->getUsername(),
             'apiKey'=>$user->getApiKey(),
             'email'=>$user->getEmail(),
