@@ -45,6 +45,8 @@ class UserController extends AbstractController {
      */
     public function registration(Request $request, MailService $mailService, UserPasswordEncoderInterface $passwordEncoder) {
         
+        if($request->isMethod('GET')) return $this->render('index.html.twig');
+        
         $dataUser = json_decode(file_get_contents('php://input'), true);
         
         $notValidResponse = ValidateService::validateRegistration($dataUser);
@@ -66,19 +68,13 @@ class UserController extends AbstractController {
     /**
      * @Route("/personal", name="personal", methods={"GET"})
      */
-    public function personal() {
+    public function personal(Request $request) {
+
+        $isJson = preg_match('/application\/json/', $request->headers->get('accept'));
+        if(!$isJson) return $this->render('index.html.twig');
 
         $user = $this->getUser();
-        // dump($data);
-        
-        // return $this->render('personal.html.twig', [            
-        //     'username'=>$user->getUsername(),
-        //     'apiKey'=>$user->getApiKey(),
-        //     'email'=>$user->getEmail(),
-        //     'verify'=>$user->getVerify(),
-        //     'dataUpdate'=>$user->getDateUpdate(),
-        // ]); 
-        
+            
         return $this->json([        
             'username'=>$user->getUsername(),
             'apiKey'=>$user->getApiKey(),

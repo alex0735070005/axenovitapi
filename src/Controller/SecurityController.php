@@ -5,24 +5,20 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="login", methods={"POST"})
+     * @Route("/login", name="login", methods={"GET", "POST"})
      */
-    public function login(AuthenticationUtils $authenticationUtils)
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
-      //var_dump('HELLOOOOO'); die;
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+      
+        if($request->isMethod('GET')) return $this->render('index.html.twig');
 
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        // $lastUsername = $authenticationUtils->getLastUsername();
 
         if($error) {
           return $this->json([
@@ -37,9 +33,6 @@ class SecurityController extends AbstractController
           'username' => $user->getUsername(),
           'roles' => $user->getRoles(),
       ]);
-        
-        // return $this->render('login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
-
     }
 
     /**
