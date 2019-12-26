@@ -12,7 +12,7 @@ use App\Entity\Post;
 class BlogController extends AbstractController
 {
      /**
-     * @Route("/posts/{id}", name="posts_options", methods={"OPTIONS"})
+     * @Route("v1/posts/{id}", name="posts_options", methods={"OPTIONS"})
      */
     public function postsOption()
     {
