@@ -45,6 +45,19 @@ class UserRepository extends ServiceEntityRepository {
         return $User;
     }
     
+  public function getUsers() {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('u.id, u.username, u.email, u.verify, u.api_key, u.roles')
+                ->from(User::class, 'u')
+                ->orderBy('u.id', 'DESC');
+        
+        $users = $qb->getQuery()->getArrayResult();
+
+        return $users;
+    }
+    
     public function verifyEmail(string $apiKey) {
         $em = $this->getEntityManager();
         $repoUser = $em->getRepository(User::class);

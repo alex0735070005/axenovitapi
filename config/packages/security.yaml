@@ -32,3 +32,4 @@ security:
             
     access_control:
         - { path: ^/personal, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
